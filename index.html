@@ -3,250 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER-X // Global Operations Control Terminal</title>
+    <title>CYBER-X // Local Control Terminal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        :root {
-            --bg-color: #050505;
-            --panel-bg: #0c0c0c;
-            --border-color: #1f1f1f;
-            --accent-green: #00ff66;
-            --accent-red: #ff3333;
-            --accent-yellow: #ffb700;
-            --text-main: #c0c0c0;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 30px;
-            min-height: 100vh;
-        }
-
-        .terminal-header {
-            border-bottom: 2px dashed var(--accent-green);
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .terminal-header h1 {
-            color: var(--accent-green);
-            font-size: 1.8rem;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
-        }
-
-        .status-indicator {
-            font-size: 0.9rem;
-            color: var(--accent-green);
-            background: rgba(0, 255, 102, 0.1);
-            padding: 5px 12px;
-            border: 1px solid var(--accent-green);
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-        }
-
-        .panel-title {
-            font-size: 1.1rem;
-            color: var(--accent-yellow);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .log-box {
-            background: #000;
-            border: 1px solid #111;
-            padding: 12px;
-            height: 180px;
-            overflow-y: auto;
-            font-size: 0.85rem;
-            color: #00ff66;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn-cyber {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-danger {
-            background: rgba(255, 51, 51, 0.15);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        .btn-danger:hover {
-            background: var(--accent-red);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
-        }
-
-        .btn-warning {
-            background: rgba(255, 183, 0, 0.15);
-            color: var(--accent-yellow);
-            border: 1px solid var(--accent-yellow);
-        }
-
-        .btn-warning:hover {
-            background: var(--accent-yellow);
-            color: #000;
-            box-shadow: 0 0 15px rgba(255, 183, 0, 0.6);
-        }
-
-        .btn-success {
-            background: rgba(0, 255, 102, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
-
-        .btn-success:hover {
-            background: var(--accent-green);
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
-        }
+        body { background: #050505; color: #00ff66; padding: 30px; font-family: 'Share Tech Mono', monospace; }
+        .panel { background: #0c0c0c; border: 1px solid #1f1f1f; padding: 20px; margin-bottom: 20px; }
+        button { width: 100%; padding: 15px; font-size: 1.1rem; font-weight: bold; cursor: pointer; border: none; margin-bottom: 10px; text-transform: uppercase; }
+        .btn-danger { background: rgba(255, 51, 51, 0.2); color: #ff3333; border: 1px solid #ff3333; }
+        .btn-success { background: rgba(0, 255, 102, 0.2); color: #00ff66; border: 1px solid #00ff66; }
+        .log-box { background: #000; border: 1px solid #111; padding: 10px; height: 120px; overflow-y: auto; font-size: 0.85rem; color: #00ff66; }
     </style>
 </head>
 <body>
-
-    <div class="terminal-header">
-        <h1>// CYBER-X : COMMAND & CONTROL CONSOLE</h1>
-        <div class="status-indicator" id="connection-status">LINK: ESTABLISHED</div>
+    <h2>// CYBER-X LOCAL COMMAND CONSOLE</h2>
+    <div class="panel">
+        <button class="btn-danger" onclick="sendAction('HIJACK')">⚡ 執行全網劫持 (Full Compromise)</button>
+        <button class="btn-success" onclick="sendAction('RESTORE')">🛡️ 恢復系統正常 (Restore Node)</button>
+    </div>
+    <div class="panel">
+        <div>[ Terminal Logs ]</div>
+        <div class="log-box" id="log">Channel initialized...<br></div>
     </div>
 
-    <div class="grid-container">
-        <!-- 控制面板：目標癱瘓與劫持 -->
-        <div class="panel">
-            <div class="panel-title">[ Target Operations: Apex Logistics ]</div>
-            <div class="control-group">
-                <button class="btn-cyber btn-danger" onclick="window.triggerFullHijack()">
-                    ⚡ 執行全網劫持 (Full Compromise)
-                </button>
-                <button class="btn-cyber btn-warning" onclick="window.triggerDefaceOnly()">
-                    🚨 顯示全螢幕駭客警告 (Deface Overlay)
-                </button>
-                <button class="btn-cyber btn-success" onclick="window.restoreSystem()">
-                    🛡️ 恢復系統正常 (Restore Node)
-                </button>
-            </div>
-        </div>
+    <script>
+        // 建立一個名為 apex_channel 的廣播通道
+        const channel = new BroadcastChannel('apex_channel');
+        const logBox = document.getElementById('log');
 
-        <!-- 終端機日誌輸出 -->
-        <div class="panel">
-            <div class="panel-title">[ Execution Log / Real-time Feed ]</div>
-            <div class="log-box" id="terminal-log">
-                [SYSTEM] Initializing C2 connection to Firebase database...<br>
-                [SYSTEM] Target node identified: /logistics<br>
-                [READY] Awaiting operator commands...<br>
-            </div>
-            <button class="btn-cyber btn-warning" style="padding: 6px; font-size: 0.8rem;" onclick="window.clearLog()">Clear Terminal</button>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
-            authDomain: "ad26-8b064.firebaseapp.com",
-            databaseURL: "https://ad26-8b064-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "ad26-8b064",
-            storageBucket: "ad26-8b064.firebasestorage.app",
-            messagingSenderId: "600044263940",
-            appId: "1:600044263940:web:31825b3dec5a026fc6f351",
-            measurementId: "G-CVQVRX80K8"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        const logBox = document.getElementById('terminal-log');
-
-        function writeLog(msg) {
-            const timestamp = new Date().toLocaleTimeString();
-            logBox.innerHTML += `[${timestamp}] ${msg}<br>`;
+        function sendAction(type) {
+            channel.postMessage({ type: type });
+            const time = new Date().toLocaleTimeString();
+            logBox.innerHTML += `[${time}] Command broadcasted: ${type}<br>`;
             logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        window.clearLog = function() {
-            logBox.innerHTML = "[SYSTEM] Log cleared.<br>";
-        }
-
-        window.triggerFullHijack = function() {
-            set(ref(db, 'logistics'), {
-                status: "SYSTEM_COMPROMISED",
-                hacked_by: "CYBER-X SQUAD",
-                malicious_message: "Global Fleet Rerouted by CYBER-X. Root access seized.",
-                deface_trigger: {
-                    active: true
-                }
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-red);'>[+] FULL HIJACK TRIGGERED: Target node overwritten.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
-        }
-
-        window.triggerDefaceOnly = function() {
-            set(ref(db, 'logistics/deface_trigger'), {
-                active: true
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-yellow);'>[+] DEFACE TRIGGER ACTIVATED: Overlay displayed on target.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
-        }
-
-        window.restoreSystem = function() {
-            set(ref(db, 'logistics'), {
-                status: "NORMAL",
-                hacked_by: "",
-                malicious_message: "",
-                deface_trigger: {
-                    active: false
-                }
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-green);'>[+] SYSTEM RESTORED: Target nodes normalized.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
         }
     </script>
 </body>
