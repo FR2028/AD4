@@ -3,33 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMMAND CENTER // Nexus Breach Utility</title>
+    <title>COMMAND CENTER // Nexus Breach Utility (10 Features)</title>
     <style>
-        body { background: #0a0a0a; color: #00ff66; font-family: 'Courier New', Courier, monospace; padding: 40px; }
-        .panel { border: 1px solid #00ff66; padding: 25px; max-width: 600px; margin: auto; box-shadow: 0 0 15px rgba(0,255,102,0.2); }
-        h1 { border-bottom: 1px solid #00ff66; padding-bottom: 10px; font-size: 1.5rem; }
-        .btn { display: block; width: 100%; padding: 15px; margin: 15px 0; background: transparent; border: 1px solid #00ff66; color: #00ff66; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        body { background: #0a0a0a; color: #00ff66; font-family: 'Courier New', Courier, monospace; padding: 30px; }
+        .panel { border: 1px solid #00ff66; padding: 25px; max-width: 800px; margin: auto; box-shadow: 0 0 15px rgba(0,255,102,0.2); }
+        h1 { border-bottom: 1px solid #00ff66; padding-bottom: 10px; font-size: 1.4rem; margin-bottom: 15px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .btn { padding: 12px; background: transparent; border: 1px solid #00ff66; color: #00ff66; cursor: pointer; font-weight: bold; font-family: inherit; transition: 0.2s; text-align: left; }
         .btn:hover { background: #00ff66; color: #000; }
-        .status-log { margin-top: 20px; font-size: 0.8rem; color: #aaa; }
+        .btn-danger { border-color: #ff003c; color: #ff003c; }
+        .btn-danger:hover { background: #ff003c; color: #000; }
+        .status-log { margin-top: 20px; padding: 10px; background: #000; border: 1px dashed #00ff66; font-size: 0.8rem; color: #aaa; }
     </style>
 </head>
 <body>
 
     <div class="panel">
-        <h1>// SYSTEM ACCESS: ROOT</h1>
-        <p>Target: NEXUS_BANK_CORE</p>
+        <h1>// COMMAND CENTER: 10-FUNCTION CONTROL MATRIX</h1>
+        <p style="font-size: 0.85rem; margin-bottom: 20px; color: #888;">Target: NEXUS_BANK_CORE // Real-time Firebase Sync Active</p>
         
-        <button class="btn" onclick="executeCommand('COMPROMISE')">EXECUTE: SYSTEM COMPROMISED</button>
-        <button class="btn" onclick="executeCommand('RESTORE')">EXECUTE: RESTORE STABILITY</button>
+        <div class="grid-2">
+            <!-- 1 -->
+            <button class="btn btn-danger" onclick="sendCmd('COMPROMISE')">[01] 系統全面淪陷 (Deface)</button>
+            <!-- 2 -->
+            <button class="btn" onclick="sendCmd('RESTORE')">[02] 一鍵恢復正常 (Restore)</button>
+            <!-- 3 -->
+            <button class="btn btn-danger" onclick="sendCmd('FREEZE_ASSETS')">[03] 凍結所有資產 ($0.00)</button>
+            <!-- 4 -->
+            <button class="btn" onclick="sendCmd('INFLATE_ASSETS')">[04] 注入異常巨款 (+$999B)</button>
+            <!-- 5 -->
+            <button class="btn btn-danger" onclick="sendCmd('TRIGGER_ALARM')">[05] 啟動警報橫幅警告</button>
+            <!-- 6 -->
+            <button class="btn" onclick="sendCmd('DISMISS_ALARM')">[06] 解除警報橫幅</button>
+            <!-- 7 -->
+            <button class="btn btn-danger" onclick="sendCmd('CORRUPT_EMAILS')">[07] 竄改客服信箱與FB</button>
+            <!-- 8 -->
+            <button class="btn" onclick="sendCmd('RESTORE_EMAILS')">[08] 還原正確聯絡資訊</button>
+            <!-- 9 -->
+            <button class="btn btn-danger" onclick="sendCmd('PAGE_SHAKE')">[09] 觸發畫面強烈震動</button>
+            <!-- 10 -->
+            <button class="btn" onclick="sendCmd('SILENT_AUDIT')">[10] 執行靜默後台審計</button>
+        </div>
         
-        <div class="status-log" id="log">Status: Awaiting Command...</div>
+        <div class="status-log" id="log">Status: Awaiting Command Execution...</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Firebase Config (必須與 B 站完全一致)
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
             authDomain: "ad26-8b064.firebaseapp.com",
@@ -42,23 +64,48 @@
 
         const db = getDatabase(initializeApp(firebaseConfig));
 
-        window.executeCommand = function(cmd) {
+        window.sendCmd = function(action) {
             const log = document.getElementById('log');
-            if (cmd === 'COMPROMISE') {
-                set(ref(db, 'nexus_bank'), {
-                    status: "SYSTEM_COMPROMISED",
-                    deface_trigger: { active: true },
-                    last_action: "ROOT_ACCESS_GRANTED"
-                });
-                log.innerText = "Status: Command [COMPROMISE] sent successfully.";
-            } else {
-                set(ref(db, 'nexus_bank'), {
-                    status: "SECURE",
-                    deface_trigger: { active: false },
-                    last_action: "SYSTEM_RESTORED"
-                });
-                log.innerText = "Status: Command [RESTORE] sent successfully.";
+            let payload = {
+                action: action,
+                timestamp: Date.now()
+            };
+
+            switch(action) {
+                case 'COMPROMISE':
+                    payload = { status: "SYSTEM_COMPROMISED", deface: true, balance: "$0.00 (FROZEN)", alert: true };
+                    break;
+                case 'RESTORE':
+                    payload = { status: "SECURE", deface: false, balance: "$142,890,450.00", alert: false, corrupt_info: false, shake: false };
+                    break;
+                case 'FREEZE_ASSETS':
+                    payload = { balance: "$0.00 (FROZEN)", status: "FROZEN BY ADMIN" };
+                    break;
+                case 'INFLATE_ASSETS':
+                    payload = { balance: "$999,999,999,999.00", status: "INFLATED & UNSTABLE" };
+                    break;
+                case 'TRIGGER_ALARM':
+                    payload = { alert: true, alert_msg: "CRITICAL: Unauthorized node injection detected!" };
+                    break;
+                case 'DISMISS_ALARM':
+                    payload = { alert: false };
+                    break;
+                case 'CORRUPT_EMAILS':
+                    payload = { corrupt_info: true };
+                    break;
+                case 'RESTORE_EMAILS':
+                    payload = { corrupt_info: false };
+                    break;
+                case 'PAGE_SHAKE':
+                    payload = { shake: true };
+                    break;
+                case 'SILENT_AUDIT':
+                    payload = { status: "AUDIT IN PROGRESS...", alert: true, alert_msg: "AUDIT: Root inspection running across all nodes." };
+                    break;
             }
+
+            set(ref(db, 'nexus_bank_control'), payload);
+            log.innerText = `[SUCCESS] Executed Command -> [ ${action} ] at ${new Date().toLocaleTimeString()}`;
         };
     </script>
 </body>
