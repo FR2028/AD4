@@ -155,13 +155,13 @@
         <div class="panel">
             <div class="panel-title">[ Target Operations: Apex Logistics ]</div>
             <div class="control-group">
-                <button class="btn-cyber btn-danger" onclick="triggerFullHijack()">
+                <button class="btn-cyber btn-danger" onclick="window.triggerFullHijack()">
                     ⚡ 執行全網劫持 (Full Compromise)
                 </button>
-                <button class="btn-cyber btn-warning" onclick="triggerDefaceOnly()">
+                <button class="btn-cyber btn-warning" onclick="window.triggerDefaceOnly()">
                     🚨 顯示全螢幕駭客警告 (Deface Overlay)
                 </button>
-                <button class="btn-cyber btn-success" onclick="restoreSystem()">
+                <button class="btn-cyber btn-success" onclick="window.restoreSystem()">
                     🛡️ 恢復系統正常 (Restore Node)
                 </button>
             </div>
@@ -175,7 +175,7 @@
                 [SYSTEM] Target node identified: /logistics<br>
                 [READY] Awaiting operator commands...<br>
             </div>
-            <button class="btn-cyber btn-warning" style="padding: 6px; font-size: 0.8rem;" onclick="clearLog()">Clear Terminal</button>
+            <button class="btn-cyber btn-warning" style="padding: 6px; font-size: 0.8rem;" onclick="window.clearLog()">Clear Terminal</button>
         </div>
     </div>
 
@@ -183,7 +183,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // 使用與 B 網站完全相同的 Firebase 設定，確保對接同一個後端
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
             authDomain: "ad26-8b064.firebaseapp.com",
@@ -210,7 +209,6 @@
             logBox.innerHTML = "[SYSTEM] Log cleared.<br>";
         }
 
-        // 1. 執行全網劫持 (改變狀態 + 顯示全螢幕)
         window.triggerFullHijack = function() {
             set(ref(db, 'logistics'), {
                 status: "SYSTEM_COMPROMISED",
@@ -222,20 +220,20 @@
             }).then(() => {
                 writeLog("<span style='color: var(--accent-red);'>[+] FULL HIJACK TRIGGERED: Target node overwritten.</span>");
             }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: Failed to write to database.</span>");
+                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
             });
         }
 
-        // 2. 僅觸發全螢幕覆蓋畫面
         window.triggerDefaceOnly = function() {
             set(ref(db, 'logistics/deface_trigger'), {
                 active: true
             }).then(() => {
                 writeLog("<span style='color: var(--accent-yellow);'>[+] DEFACE TRIGGER ACTIVATED: Overlay displayed on target.</span>");
+            }).catch((error) => {
+                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
             });
         }
 
-        // 3. 恢復系統正常
         window.restoreSystem = function() {
             set(ref(db, 'logistics'), {
                 status: "NORMAL",
@@ -246,6 +244,8 @@
                 }
             }).then(() => {
                 writeLog("<span style='color: var(--accent-green);'>[+] SYSTEM RESTORED: Target nodes normalized.</span>");
+            }).catch((error) => {
+                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
             });
         }
     </script>
