@@ -3,187 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER-X // Global Operations Control Terminal</title>
+    <title>APEX GLOBAL LOGISTICS // Supply Chain & Freight Dispatch</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
         :root {
-            --bg-color: #050505;
-            --panel-bg: #0c0c0c;
-            --border-color: #1f1f1f;
-            --accent-green: #00ff66;
-            --accent-red: #ff3333;
-            --accent-yellow: #ffb700;
-            --text-main: #c0c0c0;
+            --apex-dark: #0F172A;
+            --apex-yellow: #F59E0B;
+            --apex-yellow-hover: #D97706;
+            --apex-gray-bg: #F1F5F9;
+            --apex-card-bg: #FFFFFF;
+            --apex-text: #1E293B;
+            --apex-muted: #64748B;
+            --apex-danger: #EF4444;
+            --apex-success: #10B981;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 30px;
-            min-height: 100vh;
+            background-color: var(--apex-gray-bg);
+            color: var(--apex-text);
+            line-height: 1.5;
         }
 
-        .terminal-header {
-            border-bottom: 2px dashed var(--accent-green);
-            padding-bottom: 15px;
+        /* 導覽列 */
+        header {
+            background: var(--apex-dark);
+            color: #fff;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--apex-yellow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #94A3B8;
+        }
+
+        .nav-links li {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-links li:hover, .nav-links li.active {
+            color: #fff;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-yellow {
+            background: var(--apex-yellow);
+            color: var(--apex-dark);
+        }
+
+        .btn-yellow:hover {
+            background: var(--apex-yellow-hover);
+            color: #fff;
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .btn-outline-light:hover {
+            border-color: #fff;
+        }
+
+        /* 追蹤主 Banner */
+        .hero-tracking {
+            background: linear-gradient(135deg, var(--apex-dark) 0%, #1E293B 100%);
+            color: #fff;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-tracking h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero-tracking p {
+            color: #94A3B8;
+            font-size: 1rem;
             margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* 追蹤查詢輸入框 */
+        .track-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .track-box input {
+            flex: 1;
+            border: none;
+            padding: 12px 15px;
+            font-size: 1rem;
+            outline: none;
+            color: var(--apex-text);
+        }
+
+        /* 內容主佈局 */
+        .main-container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--apex-card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--apex-dark);
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .terminal-header h1 {
-            color: var(--accent-green);
-            font-size: 1.8rem;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
-        }
-
-        .status-indicator {
+        /* 貨運清單表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 0.9rem;
-            color: var(--accent-green);
-            background: rgba(0, 255, 102, 0.1);
-            padding: 5px 12px;
-            border: 1px solid var(--accent-green);
+            text-align: left;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #F1F5F9;
         }
 
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        th {
+            color: var(--apex-muted);
+            font-weight: 600;
+            background: #F8FAFC;
         }
 
-        .panel-title {
-            font-size: 1.1rem;
-            color: var(--accent-yellow);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-transit { background: rgba(245, 158, 11, 0.1); color: var(--apex-yellow); }
+        .badge-delivered { background: rgba(16, 185, 129, 0.1); color: var(--apex-success); }
+        .badge-hijacked { background: rgba(239, 68, 68, 0.1); color: var(--apex-danger); }
+
+        /* 右側系統狀態面板 */
+        .system-status-panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed #F1F5F9;
             padding-bottom: 8px;
         }
 
-        .log-box {
-            background: #000;
-            border: 1px solid #111;
+        .status-row span:last-child {
+            font-weight: 600;
+            color: var(--apex-dark);
+        }
+
+        .alert-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--apex-danger);
             padding: 12px;
-            height: 180px;
-            overflow-y: auto;
+            border-radius: 6px;
             font-size: 0.85rem;
-            color: #00ff66;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            margin-top: 15px;
+            display: none;
         }
 
-        .control-group {
-            display: flex;
+        .tracking-result-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        /* 駭客入侵全屏覆蓋 */
+        #hacked-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.97);
+            z-index: 99999;
+            display: none;
             flex-direction: column;
-            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            color: var(--apex-danger);
+            font-family: monospace;
+            text-align: center;
+            padding: 20px;
         }
 
-        .btn-cyber {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-danger {
-            background: rgba(255, 51, 51, 0.15);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        .btn-danger:hover {
-            background: var(--accent-red);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
-        }
-
-        .btn-warning {
-            background: rgba(255, 183, 0, 0.15);
-            color: var(--accent-yellow);
-            border: 1px solid var(--accent-yellow);
-        }
-
-        .btn-warning:hover {
-            background: var(--accent-yellow);
-            color: #000;
-            box-shadow: 0 0 15px rgba(255, 183, 0, 0.6);
-        }
-
-        .btn-success {
-            background: rgba(0, 255, 102, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
-
-        .btn-success:hover {
-            background: var(--accent-green);
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+        #hacked-overlay h1 {
+            font-size: 3.5rem;
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
 
-    <div class="terminal-header">
-        <h1>// CYBER-X : COMMAND & CONTROL CONSOLE</h1>
-        <div class="status-indicator" id="connection-status">LINK: ESTABLISHED</div>
-    </div>
-
-    <div class="grid-container">
-        <!-- 控制面板：目標癱瘓與劫持 -->
-        <div class="panel">
-            <div class="panel-title">[ Target Operations: Apex Logistics ]</div>
-            <div class="control-group">
-                <button class="btn-cyber btn-danger" onclick="window.triggerFullHijack()">
-                    ⚡ 執行全網劫持 (Full Compromise)
-                </button>
-                <button class="btn-cyber btn-warning" onclick="window.triggerDefaceOnly()">
-                    🚨 顯示全螢幕駭客警告 (Deface Overlay)
-                </button>
-                <button class="btn-cyber btn-success" onclick="window.restoreSystem()">
-                    🛡️ 恢復系統正常 (Restore Node)
-                </button>
-            </div>
-        </div>
-
-        <!-- 終端機日誌輸出 -->
-        <div class="panel">
-            <div class="panel-title">[ Execution Log / Real-time Feed ]</div>
-            <div class="log-box" id="terminal-log">
-                [SYSTEM] Initializing C2 connection to Firebase database...<br>
-                [SYSTEM] Target node identified: /logistics<br>
-                [READY] Awaiting operator commands...<br>
-            </div>
-            <button class="btn-cyber btn-warning" style="padding: 6px; font-size: 0.8rem;" onclick="window.clearLog()">Clear Terminal</button>
+    <!-- 駭客入侵全屏覆蓋 -->
+    <div id="hacked-overlay">
+        <h1>SUPPLY CHAIN HIJACKED</h1>
+        <p style="color: var(--apex-yellow); font-size: 1.1rem; margin-bottom: 20px;">Apex Global Logistics routing system has been completely seized by CYBER-X.</p>
+        <div style="background: #000; border: 1px solid var(--apex-danger); padding: 15px; max-width: 500px; text-align: left; font-size: 0.85rem; color: #00ff66;">
+            [!] Global Fleet: REROUTED<br>
+            [!] Manifest Data: OVERWRITTEN<br>
+            [!] Authorization: ROOT BYPASS SUCCESSFUL
         </div>
     </div>
 
+    <!-- 導覽列 -->
+    <header>
+        <div class="logo">APEX<span>LOGISTICS</span></div>
+        <ul class="nav-links">
+            <li class="active">Freight Tracking</li>
+            <li onclick="switchTab('fleet')">Global Fleet</li>
+            <li onclick="switchTab('warehouses')">Smart Warehouses</li>
+            <li onclick="switchTab('api')">Developer API</li>
+        </ul>
+        <div class="header-actions">
+            <button class="btn btn-outline-light" onclick="alert('Client Portal access secured via enterprise token.')">Client Sign In</button>
+            <button class="btn btn-yellow" onclick="alert('Dispatch request ticket generated.')">Request Quote</button>
+        </div>
+    </header>
+
+    <!-- 追蹤 Hero 區 -->
+    <section class="hero-tracking">
+        <h1>Global Freight & Supply Chain Intelligence</h1>
+        <p>Real-time end-to-end tracking, autonomous cargo dispatch, and secure cloud logistics management.</p>
+        <div class="track-box">
+            <input type="text" id="track-input" placeholder="Enter tracking number (e.g. APX-8821, APX-9934)..." value="APX-8821">
+            <button class="btn btn-yellow" style="padding: 0 25px; border-radius: 6px;" onclick="searchTracking()">Track Shipment</button>
+        </div>
+        <div id="tracking-result" class="tracking-result-box" style="width: 100%; max-width: 650px; text-align: left; color: var(--apex-text);"></div>
+    </section>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左側：即時活躍貨運清單 -->
+        <div>
+            <div class="card">
+                <div class="card-title">
+                    <span>Active Global Shipments</span>
+                    <span style="font-size: 0.8rem; color: var(--apex-muted);">Auto-sync via Firebase API</span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tracking ID</th>
+                            <th>Origin / Destination</th>
+                            <th>Cargo Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shipment-table-body">
+                        <tr>
+                            <td><b>APX-8821</b></td>
+                            <td>Shanghai -> Los Angeles</td>
+                            <td>High-Tech Components</td>
+                            <td><span class="badge badge-transit" id="row-1-status">In Transit</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>APX-9934</b></td>
+                            <td>Rotterdam -> Singapore</td>
+                            <td>Medical Supplies</td>
+                            <td><span class="badge badge-delivered">Delivered</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>APX-4412</b></td>
+                            <td>Hamburg -> New York</td>
+                            <td>Industrial Machinery</td>
+                            <td><span class="badge badge-transit">Customs Cleared</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Supply Chain Infrastructure</div>
+                <p style="color: var(--apex-muted); font-size: 0.9rem; margin-bottom: 15px;">Apex operates 42 automated fulfillment hubs globally, connected through high-speed encrypted database endpoints ensuring zero latency during cross-border clearance.</p>
+                <button class="btn btn-yellow" onclick="alert('Infrastructure diagnostics normal. All hub nodes responding.')">Run Hub Diagnostics</button>
+            </div>
+        </div>
+
+        <!-- 右側：即時系統與資料監控 -->
+        <div>
+            <div class="system-status-panel">
+                <div class="card-title" style="margin-bottom: 12px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px;">
+                    <span>System Node Monitor</span>
+                    <span style="color: var(--apex-success); font-size: 0.75rem;" id="sys-pill">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span>Target Node:</span>
+                    <span>/logistics</span>
+                </div>
+                <div class="status-row">
+                    <span>Active Routes:</span>
+                    <span id="route-count">1,420 Active</span>
+                </div>
+                <div class="status-row">
+                    <span>Database State:</span>
+                    <span id="db-state" style="color: var(--apex-success);">SECURED</span>
+                </div>
+                <div class="status-row">
+                    <span>API Encryption:</span>
+                    <span>AES-256</span>
+                </div>
+                <div id="alert-box" class="alert-box">
+                    WARNING: Unauthorized data mutation detected on logistics endpoint!
+                </div>
+                <button class="btn" style="width: 100%; margin-top: 15px; background: #E2E8F0; color: var(--apex-text);" onclick="alert('Node connection verified. Token active.')">Verify API Token</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase 監聽邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // 已幫你完整帶入資料庫網址與所有設定
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
             authDomain: "ad26-8b064.firebaseapp.com",
@@ -198,57 +420,59 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const logBox = document.getElementById('terminal-log');
-
-        function writeLog(msg) {
-            const timestamp = new Date().toLocaleTimeString();
-            logBox.innerHTML += `[${timestamp}] ${msg}<br>`;
-            logBox.scrollTop = logBox.scrollHeight;
+        window.searchTracking = function() {
+            const val = document.getElementById('track-input').value.trim();
+            const resBox = document.getElementById('tracking-result');
+            resBox.style.display = 'block';
+            if(val === "") {
+                resBox.innerHTML = "<b>Error:</b> Please enter a valid tracking number.";
+                return;
+            }
+            resBox.innerHTML = `<b>Tracking ID: [ ${val.toUpperCase()} ]</b><br>
+            - Current Location: Pacific Maritime Zone (Sector 4)<br>
+            - Estimated Delivery: 2 Business Days<br>
+            - Status: Verified & Dispatched via Apex Cloud API.`;
         }
 
-        window.clearLog = function() {
-            logBox.innerHTML = "[SYSTEM] Log cleared.<br>";
+        window.switchTab = function(tabName) {
+            alert(`Switched view to ${tabName.toUpperCase()} module. Data loaded successfully.`);
         }
 
-        window.triggerFullHijack = function() {
-            set(ref(db, 'logistics'), {
-                status: "SYSTEM_COMPROMISED",
-                hacked_by: "CYBER-X SQUAD",
-                malicious_message: "Global Fleet Rerouted by CYBER-X. Root access seized.",
-                deface_trigger: {
-                    active: true
+        // 即時監聽來自 A 網站的指令
+        const logRef = ref(db, 'logistics');
+        onValue(logRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.status === "SYSTEM_COMPROMISED") {
+                    document.getElementById('db-state').innerText = "COMPROMISED";
+                    document.getElementById('db-state').style.color = "var(--apex-danger)";
+                    document.getElementById('sys-pill').innerText = "BREACHED";
+                    document.getElementById('sys-pill').style.color = "var(--apex-danger)";
+                    document.getElementById('route-count').innerText = "0 (REROUTED)";
+                    const statusElem = document.getElementById('row-1-status');
+                    statusElem.innerText = "HIJACKED";
+                    statusElem.className = "badge badge-hijacked";
+                    document.getElementById('alert-box').style.display = "block";
+                    document.getElementById('alert-box').innerText = `ALERT: ${data.malicious_message}`;
+                } else {
+                    document.getElementById('db-state').innerText = "SECURED";
+                    document.getElementById('db-state').style.color = "var(--apex-success)";
+                    document.getElementById('sys-pill').innerText = "ONLINE";
+                    document.getElementById('sys-pill').style.color = "var(--apex-success)";
+                    document.getElementById('route-count').innerText = "1,420 Active";
+                    const statusElem = document.getElementById('row-1-status');
+                    statusElem.innerText = "In Transit";
+                    statusElem.className = "badge badge-transit";
+                    document.getElementById('alert-box').style.display = "none";
                 }
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-red);'>[+] FULL HIJACK TRIGGERED: Target node overwritten.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
-        }
 
-        window.triggerDefaceOnly = function() {
-            set(ref(db, 'logistics/deface_trigger'), {
-                active: true
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-yellow);'>[+] DEFACE TRIGGER ACTIVATED: Overlay displayed on target.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
-        }
-
-        window.restoreSystem = function() {
-            set(ref(db, 'logistics'), {
-                status: "NORMAL",
-                hacked_by: "",
-                malicious_message: "",
-                deface_trigger: {
-                    active: false
+                if (data.deface_trigger && data.deface_trigger.active) {
+                    document.getElementById('hacked-overlay').style.display = 'flex';
+                } else {
+                    document.getElementById('hacked-overlay').style.display = 'none';
                 }
-            }).then(() => {
-                writeLog("<span style='color: var(--accent-green);'>[+] SYSTEM RESTORED: Target nodes normalized.</span>");
-            }).catch((error) => {
-                writeLog("<span style='color: var(--accent-red);'>[-] ERROR: " + error.message + "</span>");
-            });
-        }
+            }
+        });
     </script>
 </body>
 </html>
