@@ -3,217 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS BANK // Global Digital Financial Solutions</title>
+    <title>CYBER-X // Command & Control Center</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
-        :root { --primary: #0A1128; --accent: #0066FF; --bg-light: #F8FAFC; --text-muted: #64748B; --danger: #EF4444; --success: #10B981; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-light); color: #1E293B; line-height: 1.6; }
+        :root { --bg: #050505; --panel: #111; --border: #00ff66; --accent: #00ff66; --text: #fff; --danger: #ff003c; --warn: #ffbd2e; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
+        body { background-color: var(--bg); color: var(--text); padding: 30px; }
 
-        /* Navigation */
-        header { background: #ffffff; border-bottom: 1px solid #E2E8F0; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .nav-logo { font-weight: 700; font-size: 1.4rem; color: var(--primary); }
-        .nav-logo span { color: var(--accent); }
-        .nav-links { display: flex; gap: 30px; list-style: none; font-size: 0.9rem; color: var(--text-muted); }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--accent); font-size: 2rem; margin-bottom: 5px; text-shadow: 0 0 10px rgba(0,255,102,0.4); }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 30px; }
 
-        /* Hero */
-        .hero { background: linear-gradient(135deg, var(--primary) 0%, #1E3A8A 100%); color: #ffffff; padding: 80px 50px; display: flex; justify-content: space-between; align-items: center; }
-        .dashboard-card { background: #ffffff; color: #1E293B; border-radius: 12px; padding: 30px; width: 400px; box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
-        
-        /* Alert Box */
-        .alert-banner-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--danger); padding: 12px 20px; border-radius: 6px; margin-top: 15px; font-size: 0.85rem; display: none; font-weight: 600; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .card { background: var(--panel); border: 1px solid #222; border-top: 2px solid var(--accent); border-radius: 6px; padding: 20px; }
+        .card h3 { font-size: 1.1rem; margin-bottom: 15px; color: var(--accent); }
 
-        /* Section Styles */
-        .section { padding: 80px 50px; max-width: 1200px; margin: 0 auto; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .box { background: #fff; padding: 30px; border: 1px solid #E2E8F0; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: var(--accent); padding: 10px; border-radius: 4px; font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
 
-        /* Footer Info Section */
-        .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; padding: 80px 50px; background: #fff; border-top: 1px solid #E2E8F0; }
-        .info-col h4 { margin-bottom: 15px; font-size: 0.9rem; color: var(--accent); }
-        .info-col ul { list-style: none; font-size: 0.85rem; color: var(--text-muted); }
-        .info-col ul li { margin-bottom: 6px; }
-        
-        /* Hacked Overlay */
-        #hacked-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 7, 0.98); z-index: 99999; display: none; flex-direction: column; justify-content: center; align-items: center; color: #00ff66; text-align: center; font-family: 'Share Tech Mono', monospace; padding: 20px; }
-        #hacked-overlay h1 { font-size: 3.5rem; color: #ff003c; text-shadow: 0 0 20px rgba(255, 0, 60, 0.6); margin-bottom: 15px; }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        button { flex: 1; background: #1a1a1a; border: 1px solid var(--accent); color: var(--accent); padding: 10px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        button:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px rgba(0,255,102,0.4); }
+        button.danger { border-color: var(--danger); color: var(--danger); }
+        button.danger:hover { background: var(--danger); color: #fff; box-shadow: 0 0 15px rgba(255,0,60,0.4); }
+        button.warn { border-color: var(--warn); color: var(--warn); }
+        button.warn:hover { background: var(--warn); color: #000; box-shadow: 0 0 15px rgba(255,189,46,0.4); }
 
-        /* 進階駭客終端機面板 (浮動/全屏切換) */
-        #terminal-box {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 460px;
-            height: 280px;
-            background: rgba(5, 5, 5, 0.92);
-            border: 1px solid #00ff66;
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.3);
-            border-radius: 8px;
-            z-index: 99998;
-            display: none;
-            flex-direction: column;
-            font-family: 'Share Tech Mono', monospace;
-            overflow: hidden;
-        }
-        .terminal-header {
-            background: #111;
-            padding: 8px 15px;
-            border-bottom: 1px solid #00ff66;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #00ff66;
-            font-size: 0.85rem;
-        }
-        .terminal-dots { display: flex; gap: 6px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-        
-        .terminal-body {
-            padding: 12px;
-            flex-grow: 1;
-            overflow-y: auto;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .t-line { color: #00ff66; word-break: break-all; }
-        .t-line.error { color: #ff003c; }
-        .t-line.warn { color: #ffbd2e; }
-        .t-line.info { color: #00d2ff; }
-
-        /* 畫面強烈震動特效 */
-        .shake-effect { animation: shake 0.3s infinite; }
-        @keyframes shake {
-            0% { transform: translate(2px, 2px) rotate(0deg); }
-            25% { transform: translate(-2px, -2px) rotate(-1deg); }
-            50% { transform: translate(2px, -1px) rotate(1deg); }
-            75% { transform: translate(-1px, 2px) rotate(0deg); }
-            100% { transform: translate(2px, 2px) rotate(-1deg); }
-        }
+        .status-bar { margin-top: 20px; padding: 10px; background: #000; border: 1px solid #333; font-size: 0.85rem; color: #888; }
     </style>
 </head>
 <body>
 
-    <!-- 駭客入侵全屏覆蓋層 -->
-    <div id="hacked-overlay">
-        <h1>SYSTEM COMPROMISED</h1>
-        <p style="color: #00ff66; font-size: 1.2rem; margin-bottom: 20px;">Nexus Bank Core Database has been seized by CYBER-X.</p>
-        <div style="background: #000; border: 1px solid #00ff66; padding: 20px; max-width: 500px; text-align: left; font-size: 0.85rem;">
-            [!] Asset Pool: FROZEN<br>
-            [!] Encrypted Key: EXPLOITED<br>
-            [!] Status: All client funds redirected to root controller.
+    <div class="container">
+        <h1>CYBER-X // C2 PANEL</h1>
+        <p class="subtitle">Nexus Bank Remote Control System (Firebase Backend)</p>
+
+        <div class="grid">
+            <!-- 1. 終端機遠端指令控制 -->
+            <div class="card" style="grid-column: span 2;">
+                <h3>// TERMINAL REMOTE CONTROLLER</h3>
+                <div class="form-group">
+                    <label>Terminal Box Visibility</label>
+                    <div class="btn-row">
+                        <button onclick="setTerminal(true)">Open Terminal</button>
+                        <button onclick="setTerminal(false)" class="danger">Close Terminal</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Command / Message Input</label>
+                    <input type="text" id="term-msg" placeholder="e.g. Downloading database shards...">
+                </div>
+                <div class="form-group">
+                    <label>Message Style / Type</label>
+                    <select id="term-type">
+                        <option value="">Normal (Green)</option>
+                        <option value="info">Info (Cyan)</option>
+                        <option value="warn">Warning (Yellow)</option>
+                        <option value="error">Error / Danger (Red)</option>
+                    </select>
+                </div>
+                <button onclick="sendTerminalMsg()">Send Terminal Log</button>
+            </div>
+
+            <!-- 2. 系統全面控制 -->
+            <div class="card">
+                <h3>// SYSTEM TAKEOVER</h3>
+                <div class="btn-row" style="margin-bottom: 15px;">
+                    <button class="danger" onclick="setDeface(true)">Trigger DEFACE</button>
+                    <button onclick="setDeface(false)">Restore System</button>
+                </div>
+                <div class="btn-row">
+                    <button class="warn" onclick="triggerShake()">Trigger Shake</button>
+                </div>
+            </div>
+
+            <!-- 3. 財務核心篡改 -->
+            <div class="card">
+                <h3>// VAULT & FINANCIAL STATUS</h3>
+                <div class="form-group">
+                    <label>Vault Balance</label>
+                    <input type="text" id="vault-balance" value="$0.00 (FROZEN)">
+                </div>
+                <div class="form-group">
+                    <label>Status Text</label>
+                    <input type="text" id="vault-status" value="SYSTEM COMPROMISED">
+                </div>
+                <button class="danger" onclick="updateFinancials()">Push Financial State</button>
+            </div>
+
+            <!-- 4. 警報與橫幅控制 -->
+            <div class="card">
+                <h3>// SECURITY ALERT BANNER</h3>
+                <div class="form-group">
+                    <label>Alert Message</label>
+                    <input type="text" id="alert-text" value="CRITICAL: Unauthorized asset drain in progress!">
+                </div>
+                <div class="btn-row">
+                    <button class="warn" onclick="setAlert(true)">Show Alert</button>
+                    <button onclick="setAlert(false)">Hide Alert</button>
+                </div>
+            </div>
+
+            <!-- 5. 聯絡資訊竄改 -->
+            <div class="card">
+                <h3>// METADATA CORRUPTION</h3>
+                <div class="btn-row">
+                    <button class="danger" onclick="setCorruptInfo(true)">Corrupt Contact Info</button>
+                    <button onclick="setCorruptInfo(false)">Restore Contact Info</button>
+                </div>
+            </div>
         </div>
+
+        <div class="status-bar" id="status-log">Status: Ready. Connected to Firebase DB.</div>
     </div>
 
-    <!-- 即時駭客終端機浮動視窗 -->
-    <div id="terminal-box">
-        <div class="terminal-header">
-            <span>root@cyber-x:~# session_active</span>
-            <div class="terminal-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
-            </div>
-        </div>
-        <div class="terminal-body" id="terminal-output">
-            <div class="t-line info">[SYS] Secure shell connection established...</div>
-        </div>
-    </div>
-
-    <!-- 導覽列 -->
-    <header>
-        <div class="nav-logo">NEXUS<span>BANK</span></div>
-        <ul class="nav-links">
-            <li>Personal</li>
-            <li>Corporate</li>
-            <li>Market</li>
-            <li>Security</li>
-        </ul>
-        <button style="background:var(--accent); color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:600; cursor:pointer;">Client Portal</button>
-    </header>
-
-    <!-- 英雄區塊與即時看板 -->
-    <section class="hero">
-        <div class="hero-content" style="max-width: 600px;">
-            <h1 style="font-size: 3rem; margin-bottom: 20px;">Next-Gen Global Banking</h1>
-            <p style="color: #94A3B8; font-size: 1.1rem;">Secure, real-time decentralized cloud asset management for multinational corporations and elite investors.</p>
-        </div>
-        <div class="dashboard-card">
-            <h3 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--primary);">Primary Vault Status</h3>
-            <div id="display-balance" style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">$142,890,450.00</div>
-            <div id="display-status" style="color: var(--success); font-weight: 600; font-size: 0.9rem;">SECURED & OPERATIONAL</div>
-            <div id="alert-box" class="alert-banner-box"></div>
-        </div>
-    </section>
-
-    <!-- 核心架構區塊 -->
-    <section class="section">
-        <h2 style="margin-bottom: 40px; font-size: 2rem; color: var(--primary);">Core Financial Infrastructure</h2>
-        <div class="grid-3">
-            <div class="box">
-                <h4 style="color: var(--primary); margin-bottom: 10px;">Quantum Encryption</h4>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Advanced cryptographic protocols protecting transactions across all major hubs.</p>
-            </div>
-            <div class="box">
-                <h4 style="color: var(--primary); margin-bottom: 10px;">API Settlement</h4>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Instant cross-border verification with sub-millisecond API clearing.</p>
-            </div>
-            <div class="box">
-                <h4 style="color: var(--primary); margin-bottom: 10px;">Zero-Trust Compliance</h4>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Continuous monitoring pipelines built to withstand sophisticated threats.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 模擬真實資訊與聯繫區塊 -->
-    <section class="info-grid">
-        <div class="info-col">
-            <h4>CONTACT & SOCIAL</h4>
-            <ul>
-                <li id="info-email">Email: support@nexusbank.com</li>
-                <li id="info-gmail">Gmail: nexus.official@gmail.com</li>
-                <li id="info-fb">FB: facebook.com/nexusbank</li>
-                <li>Tel: +1-800-NEXUS-FIN</li>
-            </ul>
-        </div>
-        <div class="info-col">
-            <h4>SERVICES</h4>
-            <ul>
-                <li>Wealth Management</li>
-                <li>Corporate Loans</li>
-                <li>Digital Assets</li>
-                <li>Risk Advisory</li>
-            </ul>
-        </div>
-        <div class="info-col">
-            <h4>SECURITY</h4>
-            <ul>
-                <li>Two-Factor Auth</li>
-                <li>Biometric Verify</li>
-                <li>Incident Response</li>
-                <li>Regulatory Data</li>
-            </ul>
-        </div>
-        <div class="info-col">
-            <h4>OFFICE HUBS</h4>
-            <ul>
-                <li>NY Financial District</li>
-                <li>London Bridge Office</li>
-                <li>Tokyo Shinjuku Hub</li>
-                <li>Singapore Gateway</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Firebase 即時監聽與終端機互動核心 -->
+    <!-- Firebase 控制端邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
@@ -226,80 +135,53 @@
         };
 
         const db = getDatabase(initializeApp(firebaseConfig));
-        const terminalBox = document.getElementById('terminal-box');
-        const terminalOutput = document.getElementById('terminal-output');
+        const dbRef = ref(db, 'nexus_bank_control');
+        const logBar = document.getElementById('status-log');
 
-        function appendLog(text, type = '') {
-            const line = document.createElement('div');
-            line.className = `t-line ${type}`;
-            line.innerText = `> ${text}`;
-            terminalOutput.appendChild(line);
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        function pushCommand(data) {
+            update(dbRef, data).then(() => {
+                logBar.innerText = `Status: Command executed successfully at ${new Date().toLocaleTimeString()}`;
+            }).catch((error) => {
+                logBar.innerText = `Status Error: ${error.message}`;
+            });
         }
 
-        // 即時監聽 A 網站指令
-        onValue(ref(db, 'nexus_bank_control'), (snapshot) => {
-            const data = snapshot.val();
-            if (!data) return;
+        // 全域控制函數綁定
+        window.setTerminal = function(show) {
+            pushCommand({ terminal: show });
+        }
 
-            // 終端機開關與訊息輸出
-            if (data.terminal !== undefined) {
-                terminalBox.style.display = data.terminal ? 'flex' : 'none';
-            }
-            if (data.terminal_msg) {
-                appendLog(data.terminal_msg, data.terminal_type || '');
-            }
+        window.sendTerminalMsg = function() {
+            const msg = document.getElementById('term-msg').value;
+            const type = document.getElementById('term-type').value;
+            if (!msg) return;
+            pushCommand({ terminal: true, terminal_msg: msg, terminal_type: type });
+            document.getElementById('term-msg').value = '';
+        }
 
-            // 全面入侵覆蓋層控制
-            if (data.deface !== undefined) {
-                document.getElementById('hacked-overlay').style.display = data.deface ? 'flex' : 'none';
-            }
+        window.setDeface = function(active) {
+            pushCommand({ deface: active, terminal: active, terminal_msg: active ? "SECURITY OVERRIDE: Core seized." : "System restored to normal state.", terminal_type: active ? "error" : "" });
+        }
 
-            // 餘額與狀態更新
-            if (data.balance) {
-                document.getElementById('display-balance').innerText = data.balance;
-            }
-            if (data.status) {
-                const statusEl = document.getElementById('display-status');
-                statusEl.innerText = data.status;
-                statusEl.style.color = (data.status.includes('COMPROMISED') || data.status.includes('FROZEN')) ? "var(--danger)" : "var(--success)";
-            }
+        window.triggerShake = function() {
+            pushCommand({ shake: true, terminal_msg: "WARNING: High seismic activity / kernel panic triggered!", terminal_type: "warn" });
+            setTimeout(() => pushCommand({ shake: false }), 500);
+        }
 
-            // 警報橫幅控制
-            const alertBox = document.getElementById('alert-box');
-            if (alertBox) {
-                if (data.alert) {
-                    alertBox.style.display = "block";
-                    alertBox.innerText = data.alert_msg || "WARNING: System anomaly detected!";
-                } else {
-                    alertBox.style.display = "none";
-                }
-            }
+        window.updateFinancials = function() {
+            const balance = document.getElementById('vault-balance').value;
+            const status = document.getElementById('vault-status').value;
+            pushCommand({ balance: balance, status: status, terminal_msg: `Vault state updated -> Balance: ${balance}`, terminal_type: "info" });
+        }
 
-            // 竄改與還原聯絡資訊
-            const emailLi = document.getElementById('info-email');
-            const gmailLi = document.getElementById('info-gmail');
-            const fbLi = document.getElementById('info-fb');
-            if (emailLi && gmailLi && fbLi) {
-                if (data.corrupt_info) {
-                    emailLi.innerText = "Email: hacked@cyberx-root.org";
-                    gmailLi.innerText = "Gmail: darkweb.nexus@gmail.com";
-                    fbLi.innerText = "FB: facebook.com/CYBERX.OFFICIAL";
-                } else {
-                    emailLi.innerText = "Email: support@nexusbank.com";
-                    gmailLi.innerText = "Gmail: nexus.official@gmail.com";
-                    fbLi.innerText = "FB: facebook.com/nexusbank";
-                }
-            }
+        window.setAlert = function(show) {
+            const msg = document.getElementById('alert-text').value;
+            pushCommand({ alert: show, alert_msg: msg, terminal_msg: show ? `Alert banner broadcasted: ${msg}` : "Alert banner cleared.", terminal_type: show ? "warn" : "" });
+        }
 
-            // 畫面強烈震動
-            if (data.shake) {
-                document.body.classList.add('shake-effect');
-                setTimeout(() => {
-                    document.body.classList.remove('shake-effect');
-                }, 2000);
-            }
-        });
+        window.setCorruptInfo = function(corrupt) {
+            pushCommand({ corrupt_info: corrupt, terminal_msg: corrupt ? "Database metadata compromised & replaced." : "Metadata restored.", terminal_type: corrupt ? "error" : "info" });
+        }
     </script>
 </body>
 </html>
