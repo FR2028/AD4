@@ -1,60 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CYBER-X // ULTIMATE 10-PAYLOAD COMMAND CENTER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMMAND CENTER // Nexus Breach Utility</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        body { background: #050505; color: #00ff66; padding: 25px; font-family: 'Share Tech Mono', monospace; }
-        h1 { font-size: 1.5rem; border-bottom: 2px dashed #00ff66; padding-bottom: 10px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        .panel { background: #0c0c0c; border: 1px solid #222; padding: 20px; border-radius: 6px; }
-        .panel-title { color: #ffb700; margin-bottom: 15px; font-size: 1rem; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { 
-            padding: 12px; cursor: pointer; background: rgba(0,255,102,0.05); border: 1px solid #00ff66; color: #00ff66;
-            font-family: inherit; font-weight: bold; font-size: 0.85rem; transition: 0.2s; text-transform: uppercase;
-        }
-        button:hover { background: #00ff66; color: #000; box-shadow: 0 0 10px rgba(0,255,102,0.5); }
-        .btn-danger { border-color: #ff3333; color: #ff3333; background: rgba(255,51,51,0.05); }
-        .btn-danger:hover { background: #ff3333; color: #fff; box-shadow: 0 0 10px rgba(255,51,51,0.5); }
-        .log-box { background: #000; padding: 12px; height: 380px; overflow-y: auto; border: 1px solid #111; font-size: 0.8rem; color: #00ff66; line-height: 1.4; }
+        body { background: #0a0a0a; color: #00ff66; font-family: 'Courier New', Courier, monospace; padding: 40px; }
+        .panel { border: 1px solid #00ff66; padding: 25px; max-width: 600px; margin: auto; box-shadow: 0 0 15px rgba(0,255,102,0.2); }
+        h1 { border-bottom: 1px solid #00ff66; padding-bottom: 10px; font-size: 1.5rem; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 15px 0; background: transparent; border: 1px solid #00ff66; color: #00ff66; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #00ff66; color: #000; }
+        .status-log { margin-top: 20px; font-size: 0.8rem; color: #aaa; }
     </style>
 </head>
 <body>
 
-    <h1>// CYBER-X : 10-PAYLOAD MASTER CONTROL TERMINAL</h1>
-
-    <div class="grid">
-        <div class="panel">
-            <div class="panel-title">[ 選擇要執行的 10 大駭客控制指令 ]</div>
-            <div class="btn-grid">
-                <button class="btn-danger" onclick="deploy('HIJACK')">1. 全螢幕惡意鎖定</button>
-                <button onclick="deploy('MATRIX_COLOR')">2. 強制全站變色(矩陣綠)</button>
-                <button onclick="deploy('TEXT_CORRUPT')">3. 全站文字洗版亂碼</button>
-                <button class="btn-danger" onclick="deploy('IMAGE_INVERSION')">4. 圖片全面負片與翻轉</button>
-                <button onclick="deploy('SCREEN_SHAKE')">5. 畫面強烈震動崩潰</button>
-                <button onclick="deploy('STEAL_FOCUS')">6. 彈出連續警告框</button>
-                <button class="btn-danger" onclick="deploy('BLACKOUT')">7. 伺服器無預警斷線黑屏</button>
-                <button onclick="deploy('SPAM_LOGS')">8. 後台日誌無限洗版</button>
-                <button onclick="deploy('REDIRECT_FAKE')">9. 強制導向詐騙警示頁</button>
-                <button style="border-color:#fff; color:#fff;" onclick="deploy('RESTORE')">10. 🛡️ 完全恢復正常</button>
-            </div>
-        </div>
-
-        <div class="panel">
-            <div class="panel-title">[ 即時控制回報日誌 ]</div>
-            <div class="log-box" id="log">
-                [SYSTEM] C2 Terminal online.<br>
-                [READY] Waiting for operator commands (10 payloads active)...<br>
-            </div>
-        </div>
+    <div class="panel">
+        <h1>// SYSTEM ACCESS: ROOT</h1>
+        <p>Target: NEXUS_BANK_CORE</p>
+        
+        <button class="btn" onclick="executeCommand('COMPROMISE')">EXECUTE: SYSTEM COMPROMISED</button>
+        <button class="btn" onclick="executeCommand('RESTORE')">EXECUTE: RESTORE STABILITY</button>
+        
+        <div class="status-log" id="log">Status: Awaiting Command...</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Firebase Config (必須與 B 站完全一致)
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
             authDomain: "ad26-8b064.firebaseapp.com",
@@ -62,21 +37,29 @@
             projectId: "ad26-8b064",
             storageBucket: "ad26-8b064.firebasestorage.app",
             messagingSenderId: "600044263940",
-            appId: "1:600044263940:web:31825b3dec5a026fc6f351",
-            measurementId: "G-CVQVRX80K8"
+            appId: "1:600044263940:web:31825b3dec5a026fc6f351"
         };
-        const db = getDatabase(initializeApp(firebaseConfig));
-        const logBox = document.getElementById('log');
 
-        window.deploy = function(type) {
-            set(ref(db, 'logistics/payload'), {
-                type: type,
-                timestamp: Date.now()
-            });
-            const time = new Date().toLocaleTimeString();
-            logBox.innerHTML += `[${time}] >> PAYLOAD DISPATCHED: <span style="color:#ffb700">${type}</span><br>`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }
+        const db = getDatabase(initializeApp(firebaseConfig));
+
+        window.executeCommand = function(cmd) {
+            const log = document.getElementById('log');
+            if (cmd === 'COMPROMISE') {
+                set(ref(db, 'nexus_bank'), {
+                    status: "SYSTEM_COMPROMISED",
+                    deface_trigger: { active: true },
+                    last_action: "ROOT_ACCESS_GRANTED"
+                });
+                log.innerText = "Status: Command [COMPROMISE] sent successfully.";
+            } else {
+                set(ref(db, 'nexus_bank'), {
+                    status: "SECURE",
+                    deface_trigger: { active: false },
+                    last_action: "SYSTEM_RESTORED"
+                });
+                log.innerText = "Status: Command [RESTORE] sent successfully.";
+            }
+        };
     </script>
 </body>
 </html>
