@@ -1,54 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>CYBER-X // MASTER CONTROL CENTER</title>
+    <title>CYBER-X // ULTIMATE 10-PAYLOAD COMMAND CENTER</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        
-        body { background: #080808; color: #00ff66; padding: 30px; font-family: 'Share Tech Mono', monospace; }
-        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        
-        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 5px; }
-        .panel-title { color: #aaa; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; }
-        
+        body { background: #050505; color: #00ff66; padding: 25px; font-family: 'Share Tech Mono', monospace; }
+        h1 { font-size: 1.5rem; border-bottom: 2px dashed #00ff66; padding-bottom: 10px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .panel { background: #0c0c0c; border: 1px solid #222; padding: 20px; border-radius: 6px; }
+        .panel-title { color: #ffb700; margin-bottom: 15px; font-size: 1rem; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { 
-            width: 100%; padding: 15px; margin-bottom: 10px; cursor: pointer; 
-            background: transparent; border: 1px solid #00ff66; color: #00ff66;
-            font-family: inherit; font-weight: bold; transition: 0.3s;
+            padding: 12px; cursor: pointer; background: rgba(0,255,102,0.05); border: 1px solid #00ff66; color: #00ff66;
+            font-family: inherit; font-weight: bold; font-size: 0.85rem; transition: 0.2s; text-transform: uppercase;
         }
-        button:hover { background: #00ff66; color: #000; }
-        
-        .btn-danger { border-color: #ff3333; color: #ff3333; }
-        .btn-danger:hover { background: #ff3333; color: #fff; }
-        
-        .log-box { 
-            background: #000; padding: 15px; height: 300px; overflow-y: auto; 
-            border: 1px solid #222; font-size: 0.85rem; color: #00ff66;
-        }
+        button:hover { background: #00ff66; color: #000; box-shadow: 0 0 10px rgba(0,255,102,0.5); }
+        .btn-danger { border-color: #ff3333; color: #ff3333; background: rgba(255,51,51,0.05); }
+        .btn-danger:hover { background: #ff3333; color: #fff; box-shadow: 0 0 10px rgba(255,51,51,0.5); }
+        .log-box { background: #000; padding: 12px; height: 380px; overflow-y: auto; border: 1px solid #111; font-size: 0.8rem; color: #00ff66; line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>// CYBER-X : MASTER CONTROL</h1>
-        <p>Status: <span id="conn">LINK ESTABLISHED</span></p>
-    </div>
+    <h1>// CYBER-X : 10-PAYLOAD MASTER CONTROL TERMINAL</h1>
 
-    <div class="control-grid">
+    <div class="grid">
         <div class="panel">
-            <div class="panel-title">[ PAYLOAD DEPLOYMENT ]</div>
-            <button class="btn-danger" onclick="deploy('HIJACK')">⚡ FULL SYSTEM HIJACK</button>
-            <button onclick="deploy('GLITCH_MODE')">💀 INJECT GLITCH EFFECT</button>
-            <button onclick="deploy('TEXT_STORM')">💾 CORRUPT DATA STREAM</button>
-            <button style="border-color: #fff; color: #fff;" onclick="deploy('RESTORE')">🛡️ SYSTEM RESTORE</button>
+            <div class="panel-title">[ 選擇要執行的 10 大駭客控制指令 ]</div>
+            <div class="btn-grid">
+                <button class="btn-danger" onclick="deploy('HIJACK')">1. 全螢幕惡意鎖定</button>
+                <button onclick="deploy('MATRIX_COLOR')">2. 強制全站變色(矩陣綠)</button>
+                <button onclick="deploy('TEXT_CORRUPT')">3. 全站文字洗版亂碼</button>
+                <button class="btn-danger" onclick="deploy('IMAGE_INVERSION')">4. 圖片全面負片與翻轉</button>
+                <button onclick="deploy('SCREEN_SHAKE')">5. 畫面強烈震動崩潰</button>
+                <button onclick="deploy('STEAL_FOCUS')">6. 彈出連續警告框</button>
+                <button class="btn-danger" onclick="deploy('BLACKOUT')">7. 伺服器無預警斷線黑屏</button>
+                <button onclick="deploy('SPAM_LOGS')">8. 後台日誌無限洗版</button>
+                <button onclick="deploy('REDIRECT_FAKE')">9. 強制導向詐騙警示頁</button>
+                <button style="border-color:#fff; color:#fff;" onclick="deploy('RESTORE')">10. 🛡️ 完全恢復正常</button>
+            </div>
         </div>
 
         <div class="panel">
-            <div class="panel-title">[ TERMINAL OUTPUT ]</div>
-            <div class="log-box" id="log"></div>
+            <div class="panel-title">[ 即時控制回報日誌 ]</div>
+            <div class="log-box" id="log">
+                [SYSTEM] C2 Terminal online.<br>
+                [READY] Waiting for operator commands (10 payloads active)...<br>
+            </div>
         </div>
     </div>
 
@@ -74,9 +73,8 @@
                 type: type,
                 timestamp: Date.now()
             });
-            
             const time = new Date().toLocaleTimeString();
-            logBox.innerHTML += `[${time}] >> DEPLOYING: ${type}<br>`;
+            logBox.innerHTML += `[${time}] >> PAYLOAD DISPATCHED: <span style="color:#ffb700">${type}</span><br>`;
             logBox.scrollTop = logBox.scrollHeight;
         }
     </script>
