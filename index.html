@@ -1,307 +1,60 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Global Logistics // Enterprise Supply Chain Portal</title>
+    <title>CYBER-X // MASTER CONTROL CENTER</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --primary: #0F172A;
-            --accent: #2563EB;
-            --bg-light: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --text-main: #334155;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --danger: #DC2626;
-            --success: #16A34A;
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        body { background: #080808; color: #00ff66; padding: 30px; font-family: 'Share Tech Mono', monospace; }
+        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+        
+        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .panel { background: #121212; border: 1px solid #333; padding: 20px; border-radius: 5px; }
+        .panel-title { color: #aaa; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; }
+        
+        button { 
+            width: 100%; padding: 15px; margin-bottom: 10px; cursor: pointer; 
+            background: transparent; border: 1px solid #00ff66; color: #00ff66;
+            font-family: inherit; font-weight: bold; transition: 0.3s;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            line-height: 1.6;
-            transition: all 0.3s ease;
-        }
-
-        /* 頂部導覽列 */
-        header {
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-
-        .logo-area div {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .nav-menu li {
-            cursor: pointer;
-        }
-
-        .nav-menu li:hover {
-            color: var(--accent);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: var(--bg-light);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* 主容器 */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-            margin-bottom: 24px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        /* 表格樣式 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background: #F1F5F9;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-        .badge-normal { background: #DCFCE7; color: var(--success); }
-
-        /* 系統數據指標 */
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px dashed var(--border-color);
-            font-size: 0.9rem;
-        }
-
-        .metric-row span:last-child {
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        /* 隱藏的全螢幕駭客覆蓋畫面 */
-        #hacked-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 5, 5, 0.98);
-            z-index: 99999;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #EF4444;
-            font-family: monospace;
-            text-align: center;
-            padding: 20px;
-        }
-        #hacked-overlay h1 {
-            font-size: 3rem;
-            text-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
-            margin-bottom: 15px;
+        button:hover { background: #00ff66; color: #000; }
+        
+        .btn-danger { border-color: #ff3333; color: #ff3333; }
+        .btn-danger:hover { background: #ff3333; color: #fff; }
+        
+        .log-box { 
+            background: #000; padding: 15px; height: 300px; overflow-y: auto; 
+            border: 1px solid #222; font-size: 0.85rem; color: #00ff66;
         }
     </style>
 </head>
 <body>
 
-    <!-- 駭客入侵全屏覆蓋（平時隱藏） -->
-    <div id="hacked-overlay">
-        <h1>CRITICAL SECURITY BREACH</h1>
-        <p style="color: #F59E0B; font-size: 1.2rem; margin-bottom: 20px;">Apex Global Logistics infrastructure has been seized.</p>
-        <div style="background: #000; border: 1px solid #EF4444; padding: 20px; width: 100%; max-width: 500px; text-align: left; font-size: 0.85rem; color: #00ff66; line-height: 1.5;">
-            [!] Target Database: OVERWRITTEN<br>
-            [!] Root Privileges: REVOKED<br>
-            [!] Origin: CYBER-X PROTOCOL<br>
-            > Awaiting further administrator commands...
+    <div class="header">
+        <h1>// CYBER-X : MASTER CONTROL</h1>
+        <p>Status: <span id="conn">LINK ESTABLISHED</span></p>
+    </div>
+
+    <div class="control-grid">
+        <div class="panel">
+            <div class="panel-title">[ PAYLOAD DEPLOYMENT ]</div>
+            <button class="btn-danger" onclick="deploy('HIJACK')">⚡ FULL SYSTEM HIJACK</button>
+            <button onclick="deploy('GLITCH_MODE')">💀 INJECT GLITCH EFFECT</button>
+            <button onclick="deploy('TEXT_STORM')">💾 CORRUPT DATA STREAM</button>
+            <button style="border-color: #fff; color: #fff;" onclick="deploy('RESTORE')">🛡️ SYSTEM RESTORE</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">[ TERMINAL OUTPUT ]</div>
+            <div class="log-box" id="log"></div>
         </div>
     </div>
 
-    <!-- 正常導覽列 -->
-    <header>
-        <div class="logo-area">
-            <div>AP</div>
-            <span>Apex Global Logistics</span>
-        </div>
-        <ul class="nav-menu">
-            <li>運單追蹤</li>
-            <li>全球航線</li>
-            <li>倉儲管理</li>
-            <li>系統設定</li>
-        </ul>
-        <div class="user-profile">
-            <span>🟢 系統連線正常 (ID: 8821)</span>
-        </div>
-    </header>
-
-    <!-- 正常內容主體 -->
-    <div class="container">
-        <div class="dashboard-grid">
-            <!-- 左側清單 -->
-            <div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">即時貨物與航線分派清單</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">自動同步雲端資料庫</span>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>運單號碼</th>
-                                <th>起點與目的地</th>
-                                <th>貨物類型</th>
-                                <th>目前狀態</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            <tr>
-                                <td><b>APX-9021</b></td>
-                                <td>台北港 -> 洛杉磯</td>
-                                <td>精密電子零件</td>
-                                <td><span class="status-badge badge-normal" id="status-1">運輸中</span></td>
-                            </tr>
-                            <tr>
-                                <td><b>APX-9022</b></td>
-                                <td>高雄港 -> 新加坡</td>
-                                <td>醫療物資</td>
-                                <td><span class="status-badge badge-normal">已送達</span></td>
-                            </tr>
-                            <tr>
-                                <td><b>APX-9023</b></td>
-                                <td>基隆港 -> 漢堡</td>
-                                <td>機械設備</td>
-                                <td><span class="status-badge badge-normal">海關清關中</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 右側數據面板 -->
-            <div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">節點健康狀態</span>
-                        <span style="color: var(--success); font-size: 0.8rem; font-weight: 600;" id="sys-status-text">SECURED</span>
-                    </div>
-                    <div class="metric-row">
-                        <span>連線通道:</span>
-                        <span>/logistics</span>
-                    </div>
-                    <div class="metric-row">
-                        <span>活躍路由節點:</span>
-                        <span>1,420 節點</span>
-                    </div>
-                    <div class="metric-row">
-                        <span>資料庫加密:</span>
-                        <span>AES-256</span>
-                    </div>
-                    <div class="metric-row">
-                        <span>防火牆狀態:</span>
-                        <span style="color: var(--success);" id="firewall-text">啟用中</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Firebase 即時監聽與動態特效邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCoJIzAVmrty3GddH7X5s5gSeYnMuOsGRk",
@@ -313,43 +66,19 @@
             appId: "1:600044263940:web:31825b3dec5a026fc6f351",
             measurementId: "G-CVQVRX80K8"
         };
-
         const db = getDatabase(initializeApp(firebaseConfig));
+        const logBox = document.getElementById('log');
 
-        // 監聽來自 A 網站的 payload 指令
-        onValue(ref(db, 'logistics/payload'), (snapshot) => {
-            const data = snapshot.val();
-            if (!data) return;
-
-            const body = document.body;
-            const overlay = document.getElementById('hacked-overlay');
-
-            if (data.type === 'HIJACK') {
-                overlay.style.display = 'flex';
-                document.getElementById('sys-status-text').innerText = "COMPROMISED";
-                document.getElementById('sys-status-text').style.color = "#DC2626";
-                document.getElementById('firewall-text').innerText = "已癱瘓";
-                document.getElementById('firewall-text').style.color = "#DC2626";
-            } 
-            else if (data.type === 'GLITCH_MODE') {
-                // 強制切換為駭客矩陣綠色風格
-                body.style.filter = "invert(1) hue-rotate(120deg)";
-                body.style.backgroundColor = "#000";
-            } 
-            else if (data.type === 'TEXT_STORM') {
-                // 將全網站的文字強制洗版成異常亂碼
-                const allTextElements = document.querySelectorAll('h1, h2, span, td, th, p');
-                allTextElements.forEach(el => {
-                    el.innerText = "ERROR // SYSTEM CORRUPTED BY CYBER-X";
-                    el.style.fontFamily = "monospace";
-                    el.style.color = "#EF4444";
-                });
-            }
-            else if (data.type === 'RESTORE') {
-                // 恢復正常，直接重整網頁最快最乾淨
-                window.location.reload();
-            }
-        });
+        window.deploy = function(type) {
+            set(ref(db, 'logistics/payload'), {
+                type: type,
+                timestamp: Date.now()
+            });
+            
+            const time = new Date().toLocaleTimeString();
+            logBox.innerHTML += `[${time}] >> DEPLOYING: ${type}<br>`;
+            logBox.scrollTop = logBox.scrollHeight;
+        }
     </script>
 </body>
 </html>
